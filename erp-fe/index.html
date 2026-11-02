@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%= productName %></title>
+
+    <meta charset="utf-8" />
+    <meta name="description" content="<%= productDescription %>" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>"
+    />
+
+    <!-- Favicon: Auto-adapt to OS / Browser System Theme (Laptop, Tablet, HP) -->
+    <link rel="icon" type="image/x-icon" href="/images/kafeinarts-logo-light.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/kafeinarts-logo-light.png" />
+    <script>
+      (function () {
+        function updateFavicon() {
+          var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          // When system is dark (dark tab bar) -> use light/white icon
+          // When system is light (light tab bar) -> use dark navy icon
+          var theme = isDark ? 'dark' : 'light';
+          var icoPath = isDark ? '/images/kafeinarts-logo-light.ico' : '/images/kafeinarts-logo-dark.ico';
+          var pngPath = isDark ? '/images/kafeinarts-logo-light.png' : '/images/kafeinarts-logo-dark.png';
+
+          // Clean existing icon links
+          var icons = document.querySelectorAll("link[rel*='icon']");
+          icons.forEach(function (el) {
+            el.remove();
+          });
+
+          // Insert matching ico
+          var linkIco = document.createElement('link');
+          linkIco.rel = 'icon';
+          linkIco.type = 'image/x-icon';
+          linkIco.href = icoPath + '?t=' + theme;
+          document.head.appendChild(linkIco);
+
+          // Insert matching png
+          var linkPng = document.createElement('link');
+          linkPng.rel = 'icon';
+          linkPng.type = 'image/png';
+          linkPng.sizes = '32x32';
+          linkPng.href = pngPath + '?t=' + theme;
+          document.head.appendChild(linkPng);
+
+          // Apple touch icon for HP / tablet home screens
+          var touch = document.createElement('link');
+          touch.rel = 'apple-touch-icon';
+          touch.sizes = '180x180';
+          touch.href = pngPath;
+          document.head.appendChild(touch);
+        }
+
+        updateFavicon();
+        if (window.matchMedia) {
+          var mq = window.matchMedia('(prefers-color-scheme: dark)');
+          if (mq.addEventListener) {
+            mq.addEventListener('change', updateFavicon);
+          } else if (mq.addListener) {
+            mq.addListener(updateFavicon);
+          }
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- quasar:entry-point -->
+  </body>
+</html>

@@ -1,0 +1,612 @@
+// ================================================================
+//  KAFEINARTS ERP — Global Stylesheet
+//  Theme   : Rubick (clean, flat, professional)
+//  Author  : Kafeinarts Studio
+//
+//  Table of Contents
+//  -----------------
+//  1.  Font Import
+//  2.  Design Tokens — Light Mode  (:root)
+//  3.  Design Tokens — Dark Mode   (body.body--dark)
+//  4.  Base Reset & Typography
+//  5.  Layout utility  (.app-page)
+//  6.  Component — Card
+//  7.  Component — Button
+//  8.  Component — Input  (Quasar q-field override)
+//  9.  Component — Table
+//  10. Component — Badge / Chip
+//  11. Component — Stat Card
+//  12. Component — Dialog
+//  13. Component — Breadcrumb
+//  14. Animations
+//  15. Scrollbar
+//  16. Quasar global overrides
+//  17. Sidebar — global force (must be unscoped)
+// ================================================================
+
+
+// ── 1. Font ─────────────────────────────────────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+
+// ── 2. Design Tokens — Light Mode ───────────────────────────────
+:root {
+  // ── Brand / Primary (Rubick blue) ───────────────────────────
+  --rb-primary:        #1E40AF;
+  --rb-primary-light:  #3B82F6;
+  --rb-primary-hover:  #2563EB;
+  --rb-primary-glow:   rgba(59, 130, 246, 0.25);
+  --rb-primary-soft:   rgba(59, 130, 246, 0.10);
+
+  // ── Sidebar (always deep-blue — never changes with theme) ────
+  --rb-sidebar-bg:     #1E3A8A;
+  --rb-sidebar-width:  260px;
+
+  // ── Surface & Background ────────────────────────────────────
+  --rb-bg:             #F1F5F9;
+  --rb-bg-2:           #E2E8F0;
+  --rb-surface:        #FFFFFF;
+  --rb-surface-alt:    #F8FAFC;
+  --rb-border:         #E2E8F0;
+  --rb-border-light:   rgba(148, 163, 184, 0.20);
+
+  // ── Text ────────────────────────────────────────────────────
+  --rb-text-primary:   #0F172A;
+  --rb-text-secondary: #334155;
+  --rb-text-muted:     #64748B;
+  --rb-text-light:     #94A3B8;
+  --rb-text-inv:       #FFFFFF;
+
+  // ── Header ──────────────────────────────────────────────────
+  --rb-header-bg:      #FFFFFF;
+  --rb-header-border:  #E2E8F0;
+  --rb-header-shadow:  0 1px 3px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.04);
+
+  // ── Status colours ──────────────────────────────────────────
+  --rb-success:        #10B981;
+  --rb-success-bg:     #ECFDF5;
+  --rb-success-text:   #065F46;
+  --rb-warning:        #F59E0B;
+  --rb-warning-bg:     #FFFBEB;
+  --rb-warning-text:   #92400E;
+  --rb-danger:         #EF4444;
+  --rb-danger-bg:      #FEF2F2;
+  --rb-danger-text:    #991B1B;
+  --rb-info:           #3B82F6;
+  --rb-info-bg:        #EFF6FF;
+  --rb-info-text:      #1E40AF;
+
+  // ── Elevation shadows ────────────────────────────────────────
+  --rb-shadow-xs: 0 1px 2px rgba(15,23,42,0.06);
+  --rb-shadow-sm: 0 1px 3px rgba(15,23,42,0.10), 0 1px 2px rgba(15,23,42,0.06);
+  --rb-shadow-md: 0 4px 6px rgba(15,23,42,0.08),  0 2px 4px rgba(15,23,42,0.04);
+  --rb-shadow-lg: 0 10px 15px rgba(15,23,42,0.10), 0 4px 6px rgba(15,23,42,0.05);
+  --rb-shadow-xl: 0 20px 25px rgba(15,23,42,0.10), 0 10px 10px rgba(15,23,42,0.04);
+
+  // ── Radii ───────────────────────────────────────────────────
+  --rb-radius-xs:   4px;
+  --rb-radius-sm:   8px;
+  --rb-radius-md:   12px;
+  --rb-radius-lg:   16px;
+  --rb-radius-xl:   20px;
+  --rb-radius-pill: 9999px;
+
+  // ── Motion ──────────────────────────────────────────────────
+  --rb-transition:      0.20s ease;
+  --rb-transition-fast: 0.15s ease;
+  --rb-spring:          0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  // ── Backward-compat aliases so finance pages keep working ───
+  // All --clay-* names now point to --rb-* equivalents.
+  --clay-bg:              var(--rb-bg);
+  --clay-bg-2:            var(--rb-bg-2);
+  --clay-surface:         var(--rb-surface);
+  --clay-surface-alt:     var(--rb-surface-alt);
+  --clay-text-primary:    var(--rb-text-primary);
+  --clay-text-secondary:  var(--rb-text-secondary);
+  --clay-text-muted:      var(--rb-text-muted);
+  --clay-text-light:      var(--rb-text-light);
+  --clay-text-inv:        var(--rb-text-inv);
+  --clay-accent:          var(--rb-primary-light);
+  --clay-accent-light:    #93C5FD;
+  --clay-accent-dark:     var(--rb-primary);
+  --clay-accent-glow:     var(--rb-primary-glow);
+  --clay-border:          var(--rb-border);
+  // Flatten clay shadows → simple rb shadows (no neumorphism)
+  --clay-shadow-sm:       var(--rb-shadow-sm);
+  --clay-shadow-md:       var(--rb-shadow-md);
+  --clay-shadow-lg:       var(--rb-shadow-lg);
+  --clay-shadow-hover:    var(--rb-shadow-lg);
+  --clay-shadow-active:   var(--rb-shadow-sm);
+  --clay-shadow-inset:    inset 0 2px 4px rgba(15,23,42,0.06);
+  --clay-radius-sm:       var(--rb-radius-sm);
+  --clay-radius-md:       var(--rb-radius-md);
+  --clay-radius-lg:       var(--rb-radius-lg);
+  --clay-radius-xl:       var(--rb-radius-xl);
+  --clay-radius-pill:     var(--rb-radius-pill);
+  --clay-sidebar-bg:      var(--rb-sidebar-bg);
+  --clay-sidebar-width:   var(--rb-sidebar-width);
+  --clay-header-bg:       var(--rb-header-bg);
+  --clay-header-border:   var(--rb-header-border);
+  --clay-success:         var(--rb-success);
+  --clay-success-bg:      var(--rb-success-bg);
+  --clay-warning:         var(--rb-warning);
+  --clay-warning-bg:      var(--rb-warning-bg);
+  --clay-danger:          var(--rb-danger);
+  --clay-danger-bg:       var(--rb-danger-bg);
+  --clay-info:            var(--rb-info);
+  --clay-info-bg:         var(--rb-info-bg);
+  --clay-transition:      var(--rb-transition);
+  --clay-transition-fast: var(--rb-transition-fast);
+}
+
+
+// ── 3. Design Tokens — Dark Mode ────────────────────────────────
+body.body--dark {
+  --rb-bg:           #0F172A;
+  --rb-bg-2:         #1E293B;
+  --rb-surface:      #1E293B;
+  --rb-surface-alt:  #162032;
+  --rb-border:       #334155;
+  --rb-border-light: rgba(51,65,85,0.60);
+
+  --rb-text-primary:   #F1F5F9;
+  --rb-text-secondary: #CBD5E1;
+  --rb-text-muted:     #94A3B8;
+  --rb-text-light:     #475569;
+
+  --rb-header-bg:     #1E293B;
+  --rb-header-border: #334155;
+  --rb-header-shadow: 0 1px 3px rgba(0,0,0,0.30), 0 1px 2px rgba(0,0,0,0.20);
+
+  --rb-shadow-xs: 0 1px 2px  rgba(0,0,0,0.25);
+  --rb-shadow-sm: 0 1px 3px  rgba(0,0,0,0.35), 0 1px 2px  rgba(0,0,0,0.20);
+  --rb-shadow-md: 0 4px 6px  rgba(0,0,0,0.30), 0 2px 4px  rgba(0,0,0,0.20);
+  --rb-shadow-lg: 0 10px 15px rgba(0,0,0,0.35), 0 4px 6px  rgba(0,0,0,0.20);
+  --rb-shadow-xl: 0 20px 25px rgba(0,0,0,0.40), 0 10px 10px rgba(0,0,0,0.20);
+
+  --rb-success-bg:   #064E3B; --rb-success-text: #6EE7B7;
+  --rb-warning-bg:   #451A03; --rb-warning-text: #FCD34D;
+  --rb-danger-bg:    #450A0A; --rb-danger-text:  #FCA5A5;
+  --rb-info-bg:      #1E3A8A; --rb-info-text:    #93C5FD;
+
+  // Keep clay aliases in sync
+  --clay-bg:            var(--rb-bg);
+  --clay-bg-2:          var(--rb-bg-2);
+  --clay-surface:       var(--rb-surface);
+  --clay-surface-alt:   var(--rb-surface-alt);
+  --clay-text-primary:  var(--rb-text-primary);
+  --clay-text-secondary:var(--rb-text-secondary);
+  --clay-text-muted:    var(--rb-text-muted);
+  --clay-text-light:    var(--rb-text-light);
+  --clay-border:        var(--rb-border);
+  --clay-shadow-sm:     var(--rb-shadow-sm);
+  --clay-shadow-md:     var(--rb-shadow-md);
+  --clay-shadow-lg:     var(--rb-shadow-lg);
+  --clay-shadow-hover:  var(--rb-shadow-lg);
+  --clay-shadow-active: var(--rb-shadow-sm);
+  --clay-header-bg:     var(--rb-header-bg);
+  --clay-header-border: var(--rb-header-border);
+  --clay-success-bg:    var(--rb-success-bg);
+  --clay-warning-bg:    var(--rb-warning-bg);
+  --clay-danger-bg:     var(--rb-danger-bg);
+  --clay-info-bg:       var(--rb-info-bg);
+}
+
+
+// ── 4. Base Reset & Typography ───────────────────────────────────
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--rb-bg);
+  color: var(--rb-text-primary);
+  transition: background-color 0.30s ease, color 0.30s ease;
+}
+
+
+// ── 5. Layout Utility ────────────────────────────────────────────
+// Used on every q-page inside MainLayout
+.app-page {
+  min-height: 100vh;
+  background: var(--rb-bg);
+  // Fluid padding: 12px on mobile → 24px on desktop
+  padding: clamp(12px, 2vw, 24px) clamp(12px, 2.5vw, 24px);
+  transition: background 0.30s ease;
+  // Prevent any child from causing horizontal scrollbar during sidebar transition
+  overflow-x: hidden;
+}
+
+
+// ── 6. Card ──────────────────────────────────────────────────────
+// .rb-card  → new name
+// .clay-card → legacy alias (still used by finance pages)
+.rb-card,
+.clay-card {
+  background: var(--rb-surface);
+  border-radius: var(--rb-radius-lg);
+  border: 1px solid var(--rb-border);
+  box-shadow: var(--rb-shadow-sm);
+  padding: 20px;
+  // min-width:0 + overflow:hidden prevent text from overflowing
+  // when the card is inside a flex/grid container that shrinks
+  min-width: 0;
+  overflow: hidden;
+  transition: box-shadow var(--rb-transition), transform var(--rb-transition);
+
+  &:hover { box-shadow: var(--rb-shadow-md); transform: translateY(-1px); }
+
+  // Compact variant
+  &--sm { border-radius: var(--rb-radius-md); padding: 14px; }
+
+  // No hover lift
+  &--flat {
+    box-shadow: var(--rb-shadow-xs);
+    &:hover { box-shadow: var(--rb-shadow-sm); transform: none; }
+  }
+}
+
+
+// ── 7. Button ─────────────────────────────────────────────────────
+.rb-btn,
+.clay-btn {
+  border-radius: var(--rb-radius-pill) !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: 0.2px !important;
+  box-shadow: var(--rb-shadow-xs) !important;
+  transition: all var(--rb-transition) !important;
+
+  &:hover  { box-shadow: var(--rb-shadow-sm) !important; transform: translateY(-1px) !important; }
+  &:active { box-shadow: none !important; transform: translateY(0) !important; }
+}
+
+.rb-btn-primary,
+.clay-btn-primary {
+  background: linear-gradient(135deg, var(--rb-primary-light), var(--rb-primary)) !important;
+  color: #fff !important;
+  border: none !important;
+  &:hover { background: linear-gradient(135deg, var(--rb-primary-hover), var(--rb-primary)) !important; }
+}
+
+
+// ── 8. Input (Quasar q-field) ─────────────────────────────────────
+.rb-input,
+.clay-input {
+  .q-field__control {
+    border-radius: var(--rb-radius-md) !important;
+    background: var(--rb-surface) !important;
+    border: 1.5px solid var(--rb-border) !important;
+    box-shadow: none !important;
+    transition: border-color var(--rb-transition), box-shadow var(--rb-transition) !important;
+    &:hover { border-color: var(--rb-primary-light) !important; }
+  }
+
+  &.q-field--focused .q-field__control {
+    border-color: var(--rb-primary-light) !important;
+    box-shadow: 0 0 0 3px var(--rb-primary-glow) !important;
+  }
+
+  .q-field__label,
+  .q-field__native,
+  .q-field__input  { color: var(--rb-text-primary) !important; }
+  .q-field__marginal { color: var(--rb-text-muted) !important; }
+}
+
+
+// ── 9. Table ──────────────────────────────────────────────────────
+.rb-table,
+.clay-table {
+  border-radius: var(--rb-radius-lg) !important;
+  overflow: hidden;
+  border: 1px solid var(--rb-border) !important;
+  box-shadow: var(--rb-shadow-sm) !important;
+  background: var(--rb-surface) !important;
+
+  thead tr th {
+    background: var(--rb-surface-alt) !important;
+    color: var(--rb-text-muted) !important;
+    font-weight: 600 !important;
+    font-size: 11.5px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.7px !important;
+    border-bottom: 1px solid var(--rb-border) !important;
+    padding: 10px 16px !important;
+  }
+
+  tbody tr {
+    transition: background var(--rb-transition-fast);
+    &:hover td { background: var(--rb-surface-alt) !important; }
+
+    td {
+      border-bottom: 1px solid var(--rb-border-light) !important;
+      color: var(--rb-text-primary) !important;
+      font-size: 13.5px !important;
+      padding: 10px 16px !important;
+    }
+  }
+}
+
+
+// ── 10. Badge / Chip ─────────────────────────────────────────────
+.rb-badge,
+.clay-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--rb-radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+
+  &--success { background: var(--rb-success-bg); color: var(--rb-success-text); }
+  &--warning { background: var(--rb-warning-bg); color: var(--rb-warning-text); }
+  &--danger  { background: var(--rb-danger-bg);  color: var(--rb-danger-text);  }
+  &--info    { background: var(--rb-info-bg);    color: var(--rb-info-text);    }
+  &--neutral { background: var(--rb-bg-2);       color: var(--rb-text-muted);   }
+}
+
+
+// ── 11. Stat Card ────────────────────────────────────────────────
+.rb-stat-card,
+.clay-stat-card {
+  background: var(--rb-surface);
+  border-radius: var(--rb-radius-lg);
+  border: 1px solid var(--rb-border);
+  box-shadow: var(--rb-shadow-sm);
+  padding: 18px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  // Card MUST be able to shrink — critical in grid/flex layouts
+  min-width: 0;
+  overflow: hidden;
+  transition: box-shadow var(--rb-transition), transform var(--rb-transition);
+  &:hover { box-shadow: var(--rb-shadow-md); transform: translateY(-2px); }
+
+  // Icon — always fixed size, never shrinks
+  &__icon {
+    width: 48px; height: 48px;
+    min-width: 48px;
+    border-radius: var(--rb-radius-md);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  // Named text wrapper (used when template explicitly adds .clay-stat-card__text)
+  &__text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  // Target ANY direct-child div that is NOT the icon wrapper.
+  // This catches the plain <div>...</div> pattern used in all finance pages
+  // where the text container has no class at all.
+  > div:not(.clay-stat-card__icon):not(.rb-stat-card__icon) {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  &__label {
+    font-size: 11px; color: var(--rb-text-muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
+    // Clip label text but don't break layout
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  &__value {
+    // Fluid: shrinks down to 13px on very narrow cards
+    font-size: clamp(13px, 1.6vw, 20px);
+    font-weight: 700;
+    color: var(--rb-text-primary);
+    line-height: 1.2;
+    // Ellipsis prevents overflow of long currency strings like "Rp 50.000.000"
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+}
+
+
+// ── 12. Dialog ───────────────────────────────────────────────────
+.rb-dialog,
+.clay-dialog {
+  // Quasar wraps dialog content in an inner div
+  .q-dialog__inner > div {
+    border-radius: var(--rb-radius-xl) !important;
+    box-shadow: var(--rb-shadow-xl) !important;
+    background: var(--rb-surface) !important;
+    overflow: hidden;
+    border: 1px solid var(--rb-border) !important;
+  }
+
+  &__header {
+    background: var(--rb-surface-alt);
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--rb-border);
+    display: flex; align-items: center; justify-content: space-between;
+
+    &-title {
+      font-size: 15px; font-weight: 700;
+      color: var(--rb-text-primary);
+      display: flex; align-items: center; gap: 8px;
+    }
+  }
+  &__body   { padding: 20px 22px; }
+  &__footer {
+    padding: 14px 22px;
+    border-top: 1px solid var(--rb-border);
+    display: flex; justify-content: flex-end; gap: 8px;
+    background: var(--rb-surface-alt);
+  }
+  &__card {
+    border-radius: var(--rb-radius-xl) !important;
+    box-shadow: var(--rb-shadow-xl) !important;
+    background: var(--rb-surface) !important;
+    overflow: hidden;
+    border: 1px solid var(--rb-border) !important;
+    &--full { border-radius: 0 !important; }
+  }
+}
+
+
+// ── 13. Breadcrumb ───────────────────────────────────────────────
+.rb-breadcrumb,
+.clay-breadcrumb {
+  display: flex; align-items: center; gap: 4px;
+  flex-wrap: wrap; font-size: 12.5px;
+  color: var(--rb-text-muted); margin-bottom: 14px;
+
+  &__item {
+    display: flex; align-items: center; gap: 4px;
+    cursor: pointer; white-space: nowrap;
+    transition: color var(--rb-transition-fast);
+    &:hover           { color: var(--rb-primary-light); }
+    &--active         { color: var(--rb-text-primary); font-weight: 600; cursor: default; }
+  }
+  &__sep { opacity: 0.40; font-size: 10px; }
+}
+
+
+// ── 14. Animations ───────────────────────────────────────────────
+@keyframes rb-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes rb-scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+// Legacy animation class names still used by finance pages
+.clay-animate-up { animation: rb-fade-up  0.30s ease both; }
+.clay-animate-in { animation: rb-scale-in 0.25s ease both; }
+
+
+// ── 15. Scrollbar ────────────────────────────────────────────────
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  {
+  background: var(--rb-border);
+  border-radius: var(--rb-radius-pill);
+  &:hover { background: var(--rb-text-light); }
+}
+
+
+// ── 16. Quasar global overrides ──────────────────────────────────
+.q-notification {
+  border-radius: var(--rb-radius-md) !important;
+  box-shadow: var(--rb-shadow-lg) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.q-dialog__backdrop {
+  background: rgba(15,23,42,0.55) !important;
+  backdrop-filter: blur(4px);
+}
+.q-menu {
+  border-radius: var(--rb-radius-md) !important;
+  border: 1px solid var(--rb-border) !important;
+  box-shadow: var(--rb-shadow-xl) !important;
+  background: var(--rb-surface) !important;
+}
+.q-item {
+  color: var(--rb-text-primary) !important;
+  transition: background var(--rb-transition-fast) !important;
+  &:hover, &--active { background: var(--rb-surface-alt) !important; color: var(--rb-primary-light) !important; }
+}
+.q-loading-bar  { background: var(--rb-primary-light) !important; height: 3px !important; }
+.q-tooltip      { background: var(--rb-text-secondary) !important; border-radius: var(--rb-radius-xs) !important; font-size: 11.5px !important; }
+.q-separator    { background: var(--rb-border) !important; }
+.q-chip         { border-radius: var(--rb-radius-pill) !important; }
+.q-page-container { background: var(--rb-bg) !important; transition: background 0.30s ease, padding-left 0.25s ease; }
+
+
+// ── 18. q-select placeholder via label prop ───────────────────────
+//
+// When q-select uses outlined + label (no separate q-item selected),
+// hide the floating label entirely — we use external <label> HTML instead.
+// The label should only show as placeholder text (inside the field, not floating).
+//
+// Strategy:
+//   - Force label to stay in placeholder position (transform: none, font-size stays)
+//   - Hide label as soon as a value is selected (q-field--float state)
+//   - This affects ONLY .clay-input q-select to avoid breaking other Quasar usage
+//
+
+// While field is empty → label sits as placeholder
+.clay-input.q-field--labeled:not(.q-field--float) {
+  .q-field__label {
+    font-size: 13px !important;
+    color: var(--rb-text-light, #94A3B8) !important;
+    font-weight: 400 !important;
+    // Keep label in the "resting" (non-float) position
+    transform: none !important;
+    top: 50% !important;
+    translate: 0 -50% !important;
+    line-height: 1 !important;
+  }
+}
+
+// Once value is selected → label floats = hide it completely
+// (the selected value text is shown by Quasar's own q-field__native)
+.clay-input.q-field--labeled.q-field--float {
+  .q-field__label {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
+// Must be unscoped: Quasar renders the drawer outside the
+// component's scoped boundary.
+//
+// The sidebar is ALWAYS deep-blue (#1E3A8A) in both light & dark.
+// overflow:visible lets the active-tab inverse-corner arcs
+// visually extend outside the drawer edge to meet the content panel.
+
+.app-sidebar .q-drawer,
+.app-sidebar.q-drawer {
+  background: #1E3A8A !important;
+  border-right: none !important;
+  box-shadow: 2px 0 14px rgba(0,0,0,0.25) !important;
+  overflow: visible !important;
+}
+
+.app-sidebar .q-drawer__content {
+  background: #1E3A8A !important;
+  overflow-y: auto !important;
+  overflow-x: visible !important;
+}
+
+// Lock active nav-item: white pill + navy text — enforced in BOTH modes
+.app-sidebar .nav-item--active,
+body.body--dark .app-sidebar .nav-item--active {
+  background: #FFFFFF !important;
+  color: #1E3A8A !important;
+}
+.app-sidebar .nav-item--active .nav-item__icon,
+.app-sidebar .nav-item--active .nav-item__arrow,
+body.body--dark .app-sidebar .nav-item--active .nav-item__icon,
+body.body--dark .app-sidebar .nav-item--active .nav-item__arrow {
+  color: #1E3A8A !important;
+  opacity: 1 !important;
+}
+
+/* Hide native date picker placeholder mm/dd/yyyy */
+input[type="date"]::-webkit-datetime-edit {
+  color: transparent;
+}
+input[type="date"]:focus::-webkit-datetime-edit {
+  color: inherit;
+}
+input[type="date"].has-value::-webkit-datetime-edit {
+  color: inherit;
+}
+

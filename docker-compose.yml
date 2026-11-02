@@ -1,0 +1,38 @@
+services:
+  backend:
+    container_name: kafeinarts-erp-backend
+    build:
+      context: ./erp-be
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "${BACKEND_PORT:-8484}:8000"
+    env_file:
+      - ./erp-be/.env
+    volumes:
+      - erp_storage:/app/storage
+    networks:
+      - erp-network
+
+  frontend:
+    container_name: kafeinarts-erp-frontend
+    build:
+      context: ./erp-fe
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3008}:80"
+    depends_on:
+      - backend
+    networks:
+      - erp-network
+
+volumes:
+  erp_storage:
+    name: erp_storage
+
+networks:
+  erp-network:
+    name: erp-network
+    driver: bridge

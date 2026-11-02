@@ -1,0 +1,23 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# SQLite database files
+storage/*.db
+storage/*.db-journal
+storage/*.db-wal
+storage/*.db-shm
+*.db
+
+# Environment variables
+.env
+!.env.example
